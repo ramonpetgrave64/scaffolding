@@ -56,6 +56,7 @@ runs:
       with:
         push: false
         load: true
+        provenance: false
         source: .
         workdir: ${{ github.action_path }}/CHECKOUT_DIR/fulcio
         files: docker-compose.yml
@@ -67,6 +68,7 @@ runs:
       with:
         push: false
         load: true
+        provenance: false
         source: .
         workdir: ${{ github.action_path }}/CHECKOUT_DIR/rekor
         files: docker-compose.yml
