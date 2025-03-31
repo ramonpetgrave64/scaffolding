@@ -53,8 +53,8 @@ runs:
         workdir: ${{ github.action_path }}/CHECKOUT_DIR/fulcio
         files: docker-compose.yml
         set: |
-          *.cache-from="type=gha"
-          *.cache-to="type=gha,mode=max"
+          *.cache-from=type=gha
+          *.cache-to=type=gha,mode=max
     - name: buildx bake rekor
       uses: docker/bake-action@v6
       with:
