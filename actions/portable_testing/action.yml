@@ -25,6 +25,10 @@ runs:
       run: make checkout
       env:
         CHECKOUT_DIR: ${{ github.action_path }}/CHECKOUT_DIR
+    # github.action_path has a dot in it which doesn't work well with the cache inputs.
+    # we need to get the real path of the action directory, without the dot,
+    # so that we can use it in the cache-dependency-path input.
+    # e.g., /home/runner/work/scaffolding/scaffolding/./actions/portable_testing
     - id: realpath
       shell: bash
       run: echo "path=$( realpath ${{ github.action_path }} )" >> "$GITHUB_OUTPUT"
