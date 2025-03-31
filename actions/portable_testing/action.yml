@@ -61,6 +61,7 @@ runs:
         workdir: ${{ github.action_path }}/CHECKOUT_DIR/fulcio
         files: docker-compose.yml
         set: |
+          *.tags=user/app:latest
           *.cache-from=type=gha
           *.cache-to=type=gha,mode=max
     - name: buildx bake rekor
@@ -73,6 +74,7 @@ runs:
         workdir: ${{ github.action_path }}/CHECKOUT_DIR/rekor
         files: docker-compose.yml
         set: |
+          *.tags=user/app:latest
           *.cache-from=type=gha
           *.cache-to=type=gha,mode=max
     - name: docker compose up
