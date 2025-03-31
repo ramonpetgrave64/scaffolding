@@ -54,7 +54,7 @@ runs:
     - name: buildx bake fulcio
       uses: docker/bake-action@v6
       with:
-        push: false
+        push: true
         load: true
         provenance: false
         source: .
@@ -66,7 +66,7 @@ runs:
     - name: buildx bake rekor
       uses: docker/bake-action@v6
       with:
-        push: false
+        push: true
         load: true
         provenance: false
         source: .
