@@ -15,7 +15,6 @@
 name: sigstore portable
 description: launch sigstore cotnainers
 # TODO: add inputs for the FULCIO_REPO and REKOR_REPO env variables.
-# currently, github.action_path has a dot which doesn't work well with the cache inputs.
 runs:
   using: "composite"
   steps:
@@ -27,7 +26,7 @@ runs:
         CHECKOUT_DIR: ${{ github.action_path }}/CHECKOUT_DIR
     # github.action_path has a dot in it which doesn't work well with the cache inputs.
     # we need to get the real path of the action directory, without the dot,
-    # so that we can use it in the cache-dependency-path input.
+    # so that we can use the path in the cache inputs.
     # e.g., /home/runner/work/scaffolding/scaffolding/./actions/portable_testing
     - id: realpath
       shell: bash
@@ -53,7 +52,7 @@ runs:
         workdir: ${{ github.action_path }}/CHECKOUT_DIR/fulcio
         files: docker-compose.yml
         set: |
-          *.cache-fromtype=local,src=${{ runner.temp }}/.buildx-cache
+          *.cache-from=type=local,src=${{ runner.temp }}/.buildx-cache
           *.cache-to=type=local,dest=${{ runner.temp }}/.buildx-cache-new,mode=max
         # set: |
         #   *.cache-from=type=gha
@@ -67,7 +66,7 @@ runs:
         workdir: ${{ github.action_path }}/CHECKOUT_DIR/rekor
         files: docker-compose.yml
         set: |
-          *.cache-fromtype=local,src=${{ runner.temp }}/.buildx-cache
+          *.cache-from=type=local,src=${{ runner.temp }}/.buildx-cache
           *.cache-to=type=local,dest=${{ runner.temp }}/.buildx-cache-new,mode=max
         # set: |
         #   *.cache-from=type=gha
