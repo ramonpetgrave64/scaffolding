@@ -35,7 +35,7 @@ runs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
         context: ${{ github.action_path }}/CHECKOUT_DIR/fulcio
-        file: ./docker-compose.yml
+        file: ${{ github.action_path }}/CHECKOUT_DIR/fulcio/docker-compose.yml
     - name: build rekor
       uses: docker/build-push-action@v6
       with:
@@ -43,7 +43,7 @@ runs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
         context: ${{ github.action_path }}/CHECKOUT_DIR/rekor
-        file: ./docker-compose.yml
+        file: ${{ github.action_path }}/CHECKOUT_DIR/rekor/docker-compose.yml
     # buildx bake for building and caching image layers between workflow runs.
     # - name: buildx bake fulcio
     #   uses: docker/bake-action@v6
