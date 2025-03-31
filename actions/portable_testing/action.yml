@@ -28,6 +28,11 @@ runs:
       run: make checkout
       env:
         CHECKOUT_DIR: ${{ github.action_path }}/CHECKOUT_DIR
+    - uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     - uses: docker/setup-buildx-action@v3
     # - name: build fulcio
     #   uses: docker/build-push-action@v6
