@@ -15,42 +15,21 @@
 name: sigstore portable
 description: launch sigstore cotnainers
 # TODO: add inputs for the FULCIO_REPO and REKOR_REPO env variables.
+# currently, github.action_path has a dot which doesn't work well with the cache inputs.
 runs:
   using: "composite"
   steps:
-    - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
-      with:
-        go-version: 'stable'
-        cache-dependency-path: ${{ github.action_path }}/CHECKOUT_DIR/**/*.sum
     - name: checkout
-      working-directory: ${{ github.action_path }}
+      working-directory: ${{ env.GITHUB_ACTION_PATH }}
       shell: bash
       run: make checkout
       env:
-        CHECKOUT_DIR: ${{ github.action_path }}/CHECKOUT_DIR
-    - uses: docker/login-action@v3
+        CHECKOUT_DIR: ${{ env.GITHUB_ACTION_PATH }}/CHECKOUT_DIR
+    - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
       with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ github.token }}
+        go-version: 'stable'
+        cache-dependency-path: ${{ env.GITHUB_ACTION_PATH }}/CHECKOUT_DIR/**/*.sum
     - uses: docker/setup-buildx-action@v3
-    # - name: build fulcio
-    #   uses: docker/build-push-action@v6
-    #   with:
-    #     push: false
-    #     cache-from: type=gha
-    #     cache-to: type=gha,mode=max
-    #     context: ${{ github.action_path }}/CHECKOUT_DIR/fulcio
-    #     file: ${{ github.action_path }}/CHECKOUT_DIR/fulcio/docker-compose.yml
-    # - name: build rekor
-    #   uses: docker/build-push-action@v6
-    #   with:
-    #     push: false
-    #     cache-from: type=gha
-    #     cache-to: type=gha,mode=max
-    #     context: ${{ github.action_path }}/CHECKOUT_DIR/rekor
-    #     file: ${{ github.action_path }}/CHECKOUT_DIR/rekor/docker-compose.yml
-    # buildx bake for building and caching image layers between workflow runs.
     - name: buildx bake fulcio
       uses: docker/bake-action@v6
       with:
@@ -58,7 +37,7 @@ runs:
         load: true
         provenance: false
         source: .
-        workdir: ${{ github.action_path }}/CHECKOUT_DIR/fulcio
+        workdir: ${{ env.GITHUB_ACTION_PATH }}/CHECKOUT_DIR/fulcio
         files: docker-compose.yml
         set: |
           *.tags=user/app:latest
@@ -71,18 +50,18 @@ runs:
         load: true
         provenance: false
         source: .
-        workdir: ${{ github.action_path }}/CHECKOUT_DIR/rekor
+        workdir: ${{ env.GITHUB_ACTION_PATH }}/CHECKOUT_DIR/rekor
         files: docker-compose.yml
         set: |
           *.tags=user/app:latest
           *.cache-from=type=gha
           *.cache-to=type=gha,mode=max
     - name: docker compose up
-      working-directory: ${{ github.action_path }}
+      working-directory: ${{ env.GITHUB_ACTION_PATH }}
       shell: bash
       run: make up
       env:
-        CHECKOUT_DIR: ${{ github.action_path }}/CHECKOUT_DIR
+        CHECKOUT_DIR: ${{ env.GITHUB_ACTION_PATH }}/CHECKOUT_DIR
 
 
 # docker buildx build --cache-from type=gha --cache-to type=gha,mode=max --file ./docker-compose.yml
