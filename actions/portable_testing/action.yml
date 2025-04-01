@@ -33,6 +33,8 @@ runs:
       run: make checkout
       env:
         CHECKOUT_DIR: ${{ github.action_path }}/CHECKOUT_DIR
+        FULCIO_REPO: ${{ inputs.fulcio-repo }}
+        REKOR_REPO: ${{ inputs.rekor-repo }}
     # github.action_path has a dot in it which doesn't work well with the cache inputs.
     # we need to get the real path of the action directory, without the dot,
     # so that we can use the path in the cache inputs.
@@ -73,3 +75,5 @@ runs:
       run: make up
       env:
         CHECKOUT_DIR: ${{ github.action_path }}/CHECKOUT_DIR
+        FULCIO_REPO: ${{ inputs.fulcio-repo }}
+        REKOR_REPO: ${{ inputs.rekor-repo }}
