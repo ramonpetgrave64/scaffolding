@@ -33,7 +33,7 @@ runs:
     # e.g., /home/runner/work/scaffolding/scaffolding/./actions/portable_testing
     - id: realpath
       shell: bash
-      run: echo "path=$( realpath ${{ github.action_path }} )" >> "$GITHUB_OUTPUT"
+      run: echo "path=$( realpath $GITHUB_ACTION_PATH )" >> "$GITHUB_OUTPUT"
     - name: checkout
       working-directory: ${{ steps.realpath.outputs.path }}
       shell: bash
