@@ -12,7 +12,7 @@ jobs:
         platform:
           - ubuntu-latest
           - macos-13
-          # - windows-latest # hold off while rekor still specifies `platform: linux`
+          - windows-latest
         rekor-repo:
           - https://github.com/sigstore/rekor.git
           - https://github.com/sigstore/rekor-tiles.git
