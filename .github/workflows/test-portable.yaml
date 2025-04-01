@@ -13,12 +13,17 @@ jobs:
           - ubuntu-latest
           # - macos-latest # docker is not available in github's hosted macos runners.
           # - windows-latest # hold off while rekor still specifies `platform: linux`
+        rekor-repo:
+          - https://github.com/sigstore/rekor.git
+          - https://github.com/sigstore/rekor-tiles.git
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
       - uses: ./actions/portable_testing
+        with:
+          rekor-repo: ${{ matrix.rekor-repo }}
       - name: fulcio healthcheck
         run: curl http://localhost:5555/healthz
       - name: rekor healthcheck   
