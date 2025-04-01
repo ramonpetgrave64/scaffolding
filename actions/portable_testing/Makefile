@@ -38,19 +38,19 @@ down:
 
 .PHONY: up-fulcio
 up-fulcio:
-	docker compose -f $(FULCIO_DIR)/docker-compose.yml up --wait
+	cd $(FULCIO_DIR) && docker compose up --wait
 
 .PHONY: down-fulcio
 down-fulcio:
-	docker compose -f $(FULCIO_DIR)/docker-compose.yml down
+	cd $(FULCIO_DIR) && docker compose down
 
 .PHONY: up-rekor
 up-rekor:
-	docker compose -f $(REKOR_DIR)/docker-compose.yml up --wait
+	cd $(REKOR_DIR) && docker compose up --wait
 
 .PHONY: down-rekor
 down-rekor:
-	docker compose -f $(REKOR_DIR)/docker-compose.yml down
+	cd $(REKOR_DIR) && docker compose down
 
 .PHONY: checkout
 checkout:
